@@ -1,5 +1,19 @@
+using OWASP.Security.API.Infra.Db;
+
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddSingleton<IDatabaseConnectionFactory, DatabaseConnectionFactory>();
+builder.Services.AddControllers();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name:"AllowSpecificOrigin",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:3000") // React front address
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -14,6 +28,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("AllowSpecificOrigin");
 app.UseHttpsRedirection();
 
 var summaries = new[]
@@ -35,6 +50,8 @@ app.MapGet("/weatherforecast", () =>
 })
 .WithName("GetWeatherForecast")
 .WithOpenApi();
+
+app.MapControllers();
 
 app.Run();
 
