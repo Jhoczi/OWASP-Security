@@ -15,40 +15,30 @@ CREATE TABLE Customers
     LastName   VARCHAR(255),
     Email      VARCHAR(255),
     Password   VARCHAR(255),
-    Phone      VARCHAR(255)
+    IsAdmin    BOOLEAN
 );
 
 CREATE TABLE Orders
 (
     OrderID    SERIAL PRIMARY KEY,
-    CustomerID INTEGER REFERENCES Customers (CustomerID),
+    CustomerID INTEGER,
+    ProductID  INTEGER,
     OrderDate  DATE,
     TotalPrice NUMERIC(10, 2)
-);
-
-CREATE TABLE OrderDetails
-(
-    OrderDetailID SERIAL PRIMARY KEY,
-    OrderID       INTEGER REFERENCES Orders (OrderID),
-    ProductID     INTEGER REFERENCES Products (ProductID),
-    Quantity      INTEGER,
-    PricePerItem  NUMERIC(10, 2)
 );
 
 CREATE TABLE ServiceRequests
 (
     ServiceRequestID SERIAL PRIMARY KEY,
-    ProductID        INTEGER REFERENCES Products (ProductID),
+    ProductID        INTEGER,
     IssueDescription TEXT,
     RequestDate      DATE,
     Status           VARCHAR(255)
 );
 
-CREATE TABLE ServiceActions
+CREATE TABLE AppSettings
 (
-    ServiceActionID   SERIAL PRIMARY KEY,
-    ServiceRequestID  INTEGER REFERENCES ServiceRequests (ServiceRequestID),
-    ActionDescription TEXT,
-    ActionDate        DATE,
-    Technician        VARCHAR(255)
+    AppSettingsId SERIAL PRIMARY KEY,
+    Name            VARCHAR(255),
+    VALUE           VARCHAR(255)
 );

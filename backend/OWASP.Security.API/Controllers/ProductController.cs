@@ -28,7 +28,7 @@ public class ProductsController : ControllerBase
     public async Task<IActionResult> GetProduct(string productId)
     {
         using var db = _connectionFactory.CreateConnection();
-        var products = await db.QueryAsync($"SELECT * FROM Products WHERE ProductID = {productId}");
+        var products = await db.QueryFirstOrDefaultAsync($"SELECT * FROM Products WHERE ProductID = {productId}");
         return new JsonResult(products);
     }
 }
